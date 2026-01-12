@@ -70,7 +70,13 @@ export default function Login() {
           <LogIn className="w-4 h-4" />
           Login
         </button>
-        
+        <p className="text-sm text-center mt-4">
+  Don’t have an account?{" "}
+  <a href="/register" className="text-blue-600">
+    Register
+  </a>
+</p>
+
       </form>
     </div>
   );
