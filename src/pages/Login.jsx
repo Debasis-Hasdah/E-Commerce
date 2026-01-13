@@ -1,15 +1,14 @@
 import { Mail, Lock, LogIn } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Clear previous error
     setError("");
 
     if (!email || !password) {
@@ -17,13 +16,23 @@ export default function Login() {
       return;
     }
 
-    // TEMP frontend check (backend later)
-    if (email !== "test@gmail.com" || password !== "123456") {
-      setError("Invalid email or password");
-      return;
-    }
+    try {
+      // ✅ CALL BACKEND LOGIN API
+      const res = await axios.post(
+        "http://localhost:8080/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
-    alert("Login successful (backend later)");
+      // ✅ STORE JWT TOKEN
+      localStorage.setItem("token", res.data.token);
+
+      alert("Login successful 🎉");
+    } catch (err) {
+      setError(err.response?.data || "Login failed");
+    }
   };
 
   return (
@@ -77,7 +86,7 @@ export default function Login() {
           Login
         </button>
 
-        {/* ERROR MESSAGE */}
+        {/* Error message */}
         {error && (
           <p className="mt-3 text-sm text-red-600 text-center">
             {error}
