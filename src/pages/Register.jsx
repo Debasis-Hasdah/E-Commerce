@@ -6,31 +6,32 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setError("");
 
     if (!name || !email || !password || !confirmPassword) {
-      alert("All fields are required");
+      setError("All fields are required");
       return;
     }
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
 
-    // Backend integration later
-    console.log({ name, email, password });
-    alert("Register clicked (backend coming soon)");
+    // Success (backend later)
+    alert("Registration successful");
   };
 
   return (
-    
     <div className="min-h-[80vh] flex items-center justify-center">
-      <form 
+      <form
         onSubmit={handleSubmit}
-      className="w-full max-w-md border rounded-lg p-6 shadow">
+        className="w-full max-w-md border rounded-lg p-6 shadow"
+      >
         <h1 className="text-2xl font-bold text-center mb-6">
           Create Account
         </h1>
@@ -41,10 +42,10 @@ export default function Register() {
             Name
           </label>
           <div className="flex items-center border rounded px-3">
-            <User className="w-4 h-4 text-gray-500" />
+            <User className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="text"
-              className="w-full p-2 outline-none"
+              className="flex-1 p-2 outline-none"
               placeholder="Your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -58,10 +59,10 @@ export default function Register() {
             Email
           </label>
           <div className="flex items-center border rounded px-3">
-            <Mail className="w-4 h-4 text-gray-500" />
+            <Mail className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="email"
-              className="w-full p-2 outline-none"
+              className="flex-1 p-2 outline-none"
               placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -75,10 +76,10 @@ export default function Register() {
             Password
           </label>
           <div className="flex items-center border rounded px-3">
-            <Lock className="w-4 h-4 text-gray-500" />
+            <Lock className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="password"
-              className="w-full p-2 outline-none"
+              className="flex-1 p-2 outline-none"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -87,20 +88,18 @@ export default function Register() {
         </div>
 
         {/* Confirm Password */}
-        <div className="mb-6">
+        <div className="mb-4">
           <label className="block mb-1 text-sm font-medium">
             Confirm Password
           </label>
           <div className="flex items-center border rounded px-3">
-            <Lock className="w-4 h-4 text-gray-500" />
+            <Lock className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="password"
-              className="w-full p-2 outline-none"
+              className="flex-1 p-2 outline-none"
               placeholder="••••••••"
               value={confirmPassword}
-              onChange={(e) =>
-                setConfirmPassword(e.target.value)
-              }
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
         </div>
@@ -113,6 +112,13 @@ export default function Register() {
           <UserPlus className="w-4 h-4" />
           Register
         </button>
+
+        {/* Error Message */}
+        {error && (
+          <p className="mt-3 text-sm text-red-600 text-center">
+            {error}
+          </p>
+        )}
       </form>
     </div>
   );

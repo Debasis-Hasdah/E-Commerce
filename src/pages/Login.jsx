@@ -4,18 +4,26 @@ import { useState } from "react";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Clear previous error
+    setError("");
+
     if (!email || !password) {
-      alert("Please fill all fields");
+      setError("Email and password are required");
       return;
     }
 
-    // Backend integration later
-    console.log({ email, password });
-    alert("Login clicked (backend coming soon)");
+    // TEMP frontend check (backend later)
+    if (email !== "test@gmail.com" || password !== "123456") {
+      setError("Invalid email or password");
+      return;
+    }
+
+    alert("Login successful (backend later)");
   };
 
   return (
@@ -34,11 +42,10 @@ export default function Login() {
             Email
           </label>
           <div className="flex items-center border rounded px-3">
-            <Mail className="w-4 h-4 text-gray-500" />
+            <Mail className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="email"
-              className="w-full p-2 outline-none"
-              placeholder="you@example.com"
+              className="flex-1 p-2 outline-none"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -46,16 +53,15 @@ export default function Login() {
         </div>
 
         {/* Password */}
-        <div className="mb-6">
+        <div className="mb-4">
           <label className="block mb-1 text-sm font-medium">
             Password
           </label>
           <div className="flex items-center border rounded px-3">
-            <Lock className="w-4 h-4 text-gray-500" />
+            <Lock className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="password"
-              className="w-full p-2 outline-none"
-              placeholder="••••••••"
+              className="flex-1 p-2 outline-none"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -70,13 +76,13 @@ export default function Login() {
           <LogIn className="w-4 h-4" />
           Login
         </button>
-        <p className="text-sm text-center mt-4">
-  Don’t have an account?{" "}
-  <a href="/register" className="text-blue-600">
-    Register
-  </a>
-</p>
 
+        {/* ERROR MESSAGE */}
+        {error && (
+          <p className="mt-3 text-sm text-red-600 text-center">
+            {error}
+          </p>
+        )}
       </form>
     </div>
   );
