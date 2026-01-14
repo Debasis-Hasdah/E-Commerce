@@ -1,5 +1,6 @@
-import { User, Mail, Lock, UserPlus } from "lucide-react";
+import { Mail, Lock, UserPlus, User } from "lucide-react";
 import { useState } from "react";
+import axios from "axios";
 
 export default function Register() {
   const [name, setName] = useState("");
@@ -7,11 +8,14 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
+    // Frontend validation
     if (!name || !email || !password || !confirmPassword) {
       setError("All fields are required");
       return;
@@ -22,8 +26,23 @@ export default function Register() {
       return;
     }
 
-    // Success (backend later)
-    alert("Registration successful");
+    try {
+      await axios.post("http://localhost:8080/auth/register", {
+        name,
+        email,
+        password,
+      });
+
+      setSuccess("Registration successful. You can login now 🎉");
+
+      // clear form
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+    } catch (err) {
+      setError(err.response?.data || "Registration failed");
+    }
   };
 
   return (
@@ -33,7 +52,7 @@ export default function Register() {
         className="w-full max-w-md border rounded-lg p-6 shadow"
       >
         <h1 className="text-2xl font-bold text-center mb-6">
-          Create Account
+          Register
         </h1>
 
         {/* Name */}
@@ -46,7 +65,6 @@ export default function Register() {
             <input
               type="text"
               className="flex-1 p-2 outline-none"
-              placeholder="Your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -63,7 +81,6 @@ export default function Register() {
             <input
               type="email"
               className="flex-1 p-2 outline-none"
-              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -80,7 +97,6 @@ export default function Register() {
             <input
               type="password"
               className="flex-1 p-2 outline-none"
-              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -97,7 +113,6 @@ export default function Register() {
             <input
               type="password"
               className="flex-1 p-2 outline-none"
-              placeholder="••••••••"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
@@ -113,10 +128,17 @@ export default function Register() {
           Register
         </button>
 
-        {/* Error Message */}
+        {/* ERROR */}
         {error && (
           <p className="mt-3 text-sm text-red-600 text-center">
             {error}
+          </p>
+        )}
+
+        {/* SUCCESS */}
+        {success && (
+          <p className="mt-3 text-sm text-green-600 text-center">
+            {success}
           </p>
         )}
       </form>

@@ -1,6 +1,8 @@
 import { Mail, Lock, LogIn } from "lucide-react";
 import { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -92,6 +94,17 @@ export default function Login() {
             {error}
           </p>
         )}
+
+        <p className="mt-4 text-sm text-center">
+  Don’t have an account?{" "}
+  <Link
+    to="/register"
+    className="text-blue-600 hover:underline font-medium"
+  >
+    Register
+  </Link>
+</p>
+
       </form>
     </div>
   );
